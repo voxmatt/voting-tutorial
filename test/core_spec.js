@@ -38,49 +38,94 @@ describe('application logic', () => {
         entries: List.of('Sunshine'),
       }));
     });
+
+    it('puts winner of current vote back to entries', () => {
+      const state = new Map({
+        vote: new Map({
+          pair: List.of('Trainspotting', '28 Days Later'),
+          tally: new Map({
+            Trainspotting: 2,
+            '28 Days Later': 1,
+          }),
+        }),
+        entries: List.of('Sunshine', 'Millions', '127 Hours'),
+      });
+      const nextState = next(state);
+      expect(nextState).to.equal(new Map({
+        vote: new Map({
+          pair: List.of('Sunshine', 'Millions'),
+        }),
+        entries: List.of('127 Hours', 'Trainspotting'),
+      }));
+    });
+
+    it('puts both from tied vote back to entries', () => {
+      const state = new Map({
+        vote: new Map({
+          pair: List.of('Trainspotting', '28 Days Later'),
+          tally: new Map({
+            Trainspotting: 2,
+            '28 Days Later': 2,
+          }),
+        }),
+        entries: List.of('Sunshine', 'Millions', '127 Hours'),
+      });
+      const nextState = next(state);
+      expect(nextState).to.equal(new Map({
+        vote: new Map({
+          pair: List.of('Sunshine', 'Millions'),
+        }),
+        entries: List.of('127 Hours', 'Trainspotting', '28 Days Later'),
+      }));
+    });
+
+    it('marks winner when just one entry left', () => {
+      const state = new Map({
+        vote: new Map({
+          pair: List.of('Trainspotting', '28 Days Later'),
+          tally: new Map({
+            Trainspotting: 2,
+            '28 Days Later': 1,
+          }),
+        }),
+        entries: new List(),
+      });
+      const nextState = next(state);
+      expect(nextState).to.equal(new Map({
+        winner: 'Trainspotting',
+      }));
+    });
   });
 
   describe('vote', () => {
     it('creates a tally for the voted entry', () => {
       const state = new Map({
-        vote: new Map({
-          pair: List.of('Trainspotting', '28 Days Later'),
-        }),
-        entries: new List(),
+        pair: List.of('Trainspotting', '28 Days Later'),
       });
       const nextState = vote(state, 'Trainspotting');
 
       expect(nextState).to.equal(new Map({
-        vote: new Map({
-          pair: List.of('Trainspotting', '28 Days Later'),
-          tally: new Map({
-            Trainspotting: 1,
-          }),
+        pair: List.of('Trainspotting', '28 Days Later'),
+        tally: new Map({
+          Trainspotting: 1,
         }),
-        entries: new List(),
       }));
     });
 
     it('adds to existing tally', () => {
       const state = new Map({
-        vote: new Map({
-          pair: List.of('Trainspotting', '28 Days Later'),
-          tally: new Map({
-            Trainspotting: 1,
-          }),
+        pair: List.of('Trainspotting', '28 Days Later'),
+        tally: new Map({
+          Trainspotting: 1,
         }),
-        entries: new List(),
       });
       const nextState = vote(state, 'Trainspotting');
 
       expect(nextState).to.equal(new Map({
-        vote: new Map({
-          pair: List.of('Trainspotting', '28 Days Later'),
-          tally: new Map({
-            Trainspotting: 2,
-          }),
+        pair: List.of('Trainspotting', '28 Days Later'),
+        tally: new Map({
+          Trainspotting: 2,
         }),
-        entries: new List(),
       }));
     });
   });
