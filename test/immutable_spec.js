@@ -1,4 +1,4 @@
-/* eslint-disable prefer-const, new-cap */
+/* eslint-disable prefer-const */
 import { expect } from 'chai';
 import { List, Map } from 'immutable';
 
@@ -51,12 +51,12 @@ describe('immutability', () => {
     }
 
     it('is immutable', () => {
-      let state = Map({
+      let state = new Map({
         movies: List.of('Trainspotting', '28 Days Later'),
       });
       let nextState = addMovie(state, 'Sunshine');
 
-      expect(nextState).to.equal(Map({
+      expect(nextState).to.equal(new Map({
         movies: List.of('Trainspotting', '28 Days Later', 'Sunshine'),
       }));
     });
