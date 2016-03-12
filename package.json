@@ -30,6 +30,13 @@
     ]
   },
   "eslintConfig": {
-    "extends": "airbnb"
+    "extends": "airbnb",
+    "globals": {
+        "chai": true,
+        "describe": true,
+        "it": true,
+        "expect": true,
+        "sinon": true
+    }
   }
 }
