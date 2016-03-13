@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "babel-node index.js",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive",
     "test:watch": "npm run test -- --watch"
   },
@@ -12,7 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "immutable": "^3.7.6",
-    "redux": "^3.3.1"
+    "redux": "^3.3.1",
+    "socket.io": "^1.4.5"
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",
